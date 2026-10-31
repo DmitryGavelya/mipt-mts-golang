@@ -80,8 +80,6 @@ func (s *TaskStore) Get(id string) (Task, bool) {
 	return task, ok
 }
 
-// GetWithTotal читает задачу и размер хранилища под одной блокировкой,
-// чтобы метаданные v2 соответствовали возвращаемой задаче.
 func (s *TaskStore) GetWithTotal(id string) (Task, int, bool) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -141,8 +139,6 @@ func (s *TaskStore) Len() int {
 	return len(s.tasks)
 }
 
-// SaveToFile пишет через временный файл и rename, чтобы сбой посреди записи
-// не испортил предыдущую копию.
 func (s *TaskStore) SaveToFile(path string) error {
 	data, err := json.MarshalIndent(s.List(), "", "  ")
 	if err != nil {

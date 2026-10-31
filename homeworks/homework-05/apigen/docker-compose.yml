@@ -1,0 +1,17 @@
+# Postgres для тестов ДЗ5: docker compose up -d --wait
+services:
+  postgres:
+    image: postgres:17.7
+    environment:
+      POSTGRES_USER: hw5
+      POSTGRES_PASSWORD: hw5
+      POSTGRES_DB: hw5
+    ports:
+      - "5432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data # данные не нужны после остановки, а в памяти быстрее
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -U hw5 -d hw5"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
